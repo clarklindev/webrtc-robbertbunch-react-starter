@@ -5,6 +5,8 @@ import CallerVideo from './Components/CallerVideo'
 import AnswerVideo from './Components/AnswerVideo'
 import Home from './Components/Home'
 
+import { WebrtcProvider } from './context/WebRTCContext';
+
 function App() {
 
   //holds: callStatus, haveMedia, videoEnabled, audioEnabled, 
@@ -17,6 +19,7 @@ function App() {
   const [ offerData, setOfferData ] = useState(null)
 
   return (
+    <WebrtcProvider>
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={
@@ -63,7 +66,8 @@ function App() {
           />} 
         />
       </Routes>
-    </BrowserRouter>        
+    </BrowserRouter>  
+    </WebrtcProvider>     
   );
 }
 
