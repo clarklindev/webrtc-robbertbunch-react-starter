@@ -54,7 +54,15 @@ width=600
 ## 4. Project setup and resources
 - [https://www.youtube.com/watch?v=jIi_QuizfnQ](https://www.youtube.com/watch?v=jIi_QuizfnQ)
 - [https://github.com/robertbunch/webrtc-react-starter](https://github.com/robertbunch/webrtc-react-starter)
+- connecting from frontend requires https (WebRTC Media requires https)
+- backend is http
 
+### create react app (https in development)
+- NOTE: REQUIRED STEP!
+- [https in development](https://create-react-app.dev/docs/using-https-in-development/#custom-ssl-certificate)
+- package.json 
+    - `"start": "cross-env HTTPS=true SSL_CRT_FILE=./certs/cert.crt SSL_KEY_FILE=./certs/cert.key react-scripts start"`
+    - note that im using `cross-env` npm module for crossplatform env variable and i am also using my certs... 
 
 ## 5. Backend overview and test connection  
 ## 6. Handling potential errors (IMPORTANT!)  
