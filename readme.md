@@ -52,6 +52,10 @@ width=600
 />
 
 ## 4. Project setup and resources
+- [https://www.youtube.com/watch?v=jIi_QuizfnQ](https://www.youtube.com/watch?v=jIi_QuizfnQ)
+- [https://github.com/robertbunch/webrtc-react-starter](https://github.com/robertbunch/webrtc-react-starter)
+
+
 ## 5. Backend overview and test connection  
 ## 6. Handling potential errors (IMPORTANT!)  
 ## 7. Front-end code overview  
