@@ -4,8 +4,12 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import socketConnection from '../webrtcUtilities/socketConnection'
 import ActionButtons from './ActionButtons/ActionButtons'
 import VideoMessageBox from "./VideoMessageBox";
+import { useWebrtc } from "../context/WebrtcContext";
 
-const CallerVideo = ({remoteStream, localStream,peerConnection,callStatus,updateCallStatus,userName})=>{
+const CallerVideo = ()=>{
+
+    const { callStatus, peerConnection, remoteStream, localStream, userName, updateCallStatus} = useWebrtc();
+
     const remoteFeedEl = useRef(null); //this is a React ref to a dom element, so we can interact with it the React way
     const localFeedEl = useRef(null); //this is a React ref to a dom element, so we can interact with it the React way
     const navigate = useNavigate();

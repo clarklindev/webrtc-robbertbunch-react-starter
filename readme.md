@@ -108,6 +108,9 @@ useEffect(()=>{
     - username
     - offerData
 
+- OUTCOME: code has been updated to use react context for app level state (instead of passing props to each component) 
+- OUTCOME: using react-router 6.3
+
 <img
 src='exercise_files/07-front-end-code-overview-move-app-state-to-react-context.png'
 alt='07-front-end-code-overview-move-app-state-to-react-context.png'
