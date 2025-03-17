@@ -92,11 +92,13 @@ useEffect(()=>{
     test()
 },[])
 ```
-## 6. Handling potential errors (IMPORTANT!)  
+## 6. Handling potential errors (IMPORTANT!)
+- @17min32sec 
 - restart server
 - restart browser/page
 
 ## 7. Front-end code overview  
+- @19min21sec
 - TODO: move app state (which in tutorial is being passed down to each component) into react context
 - App State (tutorial):
     - callStatus
