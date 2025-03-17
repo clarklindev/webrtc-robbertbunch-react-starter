@@ -71,6 +71,27 @@ width=600
     - note that im using `cross-env` npm module for crossplatform env variable and i am also using my certs... 
 
 ## 5. Backend overview and test connection  
+
+### test the connection:
+- 16min40sec 
+- front-end/src/Components/Home.js
+- uncomment
+- NOTE: after test, recomment else it will mess with the backend
+- OUTCOME: browser console logs `pong`
+- TROUBLESHOOT: the version of frontend package and backend package should be same 
+    - eg. backend "socket.io": "^4.7.5"
+    - eg. frontend "socket.io-client": "^4.7.5"
+
+```js
+//front-end/src/Components/Home.js
+useEffect(()=>{
+    const test = async()=>{
+        const socket = socketConnection("test")
+    }
+    //if this works, you will get pong in the console!
+    test()
+},[])
+```
 ## 6. Handling potential errors (IMPORTANT!)  
 ## 7. Front-end code overview  
 ## 8. socketConnection and socket events  

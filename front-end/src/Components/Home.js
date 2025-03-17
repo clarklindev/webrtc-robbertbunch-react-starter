@@ -21,13 +21,13 @@ const Home = ({callStatus,updateCallStatus,setLocalStream,
     }
 
     //Test backend connection
-    // useEffect(()=>{
-    //     const test = async()=>{
-    //         const socket = socketConnection("test")
-    //     }
-    //     //if this works, you will get pong in the console!
-    //     test()
-    // },[])
+    useEffect(()=>{
+        const test = async()=>{
+            const socket = socketConnection("test")
+        }
+        //if this works, you will get pong in the console!
+        test()
+    },[])
     
     //Nothing happens until the user clicks join
     //(Helps with React double render)
