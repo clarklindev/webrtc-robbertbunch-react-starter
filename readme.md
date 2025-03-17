@@ -93,6 +93,9 @@ useEffect(()=>{
 },[])
 ```
 ## 6. Handling potential errors (IMPORTANT!)  
+- restart server
+- restart browser/page
+
 ## 7. Front-end code overview  
 ## 8. socketConnection and socket events  
 ## 9. Call and offer  
