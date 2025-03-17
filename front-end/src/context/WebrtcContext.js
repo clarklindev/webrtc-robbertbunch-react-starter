@@ -1,7 +1,7 @@
 import React, {useReducer, useContext } from 'react';
 
 const initialState = {
-    callStatus:'',
+    callStatus:{},
     localStream:null,
     remoteStream:null,
     peerConnection:null,
