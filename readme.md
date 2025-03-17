@@ -97,6 +97,21 @@ useEffect(()=>{
 - restart browser/page
 
 ## 7. Front-end code overview  
+- TODO: move app state (which in tutorial is being passed down to each component) into react context
+- App State (tutorial):
+    - callStatus
+    - localStream
+    - remoteStream
+    - peerConnection
+    - username
+    - offerData
+
+<img
+src='exercise_files/07-front-end-code-overview-move-app-state-to-react-context.png'
+alt='07-front-end-code-overview-move-app-state-to-react-context.png'
+width=600
+/>
+
 ## 8. socketConnection and socket events  
 ## 9. Call and offer  
 ## 10. Enable and disable video  

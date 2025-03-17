@@ -1,13 +1,15 @@
 import React, {useReducer, useContext } from 'react';
 
 const initialState = {
-    something:null,
-    setSomethingElse:null
+    callStatus:'',
+    localStream:null,
+    remoteStream:null,
+    peerConnection:null,
+    username:'',
+    offerData:null
 }
 
 const exposedFunctions = {
-    setSomething:()=>{},
-    setSomethingElse:()=>{},
     addBlogPost:(title, detail)=>{}
 }
 
@@ -29,16 +31,12 @@ const webrtcReducer = (state, action)=>{
 export const WebrtcProvider = ({children})=>{
     const [state, dispatch] = useReducer(webrtcReducer, initialState);
     
-    const setSomething = ()=>{}
-    const setSomethingElse = ()=>{}
     const addBlogPost = (title, detail)=>{
         dispatch({type: 'add_blogpost', payload:{title, detail} });
     }
     
     const context = {
         ...state,
-        setSomething,
-        setSomethingElse,
         addBlogPost
     }
 
