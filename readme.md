@@ -14,6 +14,13 @@
 [81:30](https://www.youtube.com/watch?v=jIi_QuizfnQ&t=4890s) - [12. Hangup button](#12-hangup-button)  
 
 ## 1. Whiteboard Project  
+
+<img
+src='exercise_files/01-whiteboard-project-who-drives.png'
+alt=''
+width=600
+/>
+
 - let webrtc drive (as it is async) and do its thing then hand it to react 
 
 ## 2. Issues when putting these 2 together

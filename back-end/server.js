@@ -11,27 +11,28 @@ app.use(express.static(__dirname))
 //we generated them with mkcert
 // $ mkcert create-ca
 // $ mkcert create-cert
-// const key = fs.readFileSync('cert.key');
-// const cert = fs.readFileSync('cert.crt');
+const key = fs.readFileSync('cert.key');
+const cert = fs.readFileSync('cert.crt');
 
 //we changed our express setup so we can use https
 //pass the key and cert to createServer on https
-// const expressServer = https.createServer({key, cert}, app);
-
-const expressServer = http.createServer(app);
+const expressServer = https.createServer({key, cert}, app);
+// const expressServer = http.createServer(app);
 //create our socket.io server... it will listen to our express port
 const io = socketio(expressServer,{
     cors: {
         origin: [
             "https://localhost:3000",
-            // 'https://LOCAL-DEV-IP-HERE' //if using a phone or another computer
+            'https://192.168.65.149:3000' //if using a phone or another computer
         ],
         methods: ["GET", "POST"]
     }
 });
 
 
-expressServer.listen(8181);
+expressServer.listen(8181, ()=> {
+    console.log('server listening on port 8181')
+});
 
 //offers will contain {}
 const offers = [
