@@ -29,25 +29,31 @@ width=600
 
 <img
 src='exercise_files/03-demo-1.png'
-alt=''
+alt='03-demo-1.png'
+width=600
+/>
+
+<img
+src='exercise_files/03-demo-1b.png'
+alt='03-demo-1b.png'
 width=600
 />
 
 <img
 src='exercise_files/03-demo-2.png'
-alt=''
+alt='03-demo-2.png'
 width=600
 />
 
 <img
 src='exercise_files/03-demo-3.png'
-alt=''
+alt='03-demo-3.png'
 width=600
 />
 
 <img
 src='exercise_files/03-demo-4.png'
-alt=''
+alt='03-demo-4.png'
 width=600
 />
 
