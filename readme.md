@@ -27,6 +27,30 @@ width=600
 
 ## 3. Demo
 
+<img
+src='exercise_files/03-demo-1.png'
+alt=''
+width=600
+/>
+
+<img
+src='exercise_files/03-demo-2.png'
+alt=''
+width=600
+/>
+
+<img
+src='exercise_files/03-demo-3.png'
+alt=''
+width=600
+/>
+
+<img
+src='exercise_files/03-demo-4.png'
+alt=''
+width=600
+/>
+
 ## 4. Project setup and resources
 ## 5. Backend overview and test connection  
 ## 6. Handling potential errors (IMPORTANT!)  
