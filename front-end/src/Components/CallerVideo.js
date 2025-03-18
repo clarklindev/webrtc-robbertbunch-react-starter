@@ -18,14 +18,16 @@ const CallerVideo = ()=>{
 
     //send back to home if no localStream
     useEffect(()=>{
-
+        if(!localStream){
+            navigate('/');
+        }
+        else{
+            //set video tags
+            remoteFeedEl.current.srcObject = remoteStream;
+            localFeedEl.current.srcObject = localStream;
+        }
     },[])
     
-    //set video tags
-    useEffect(()=>{
-
-    },[])
-
     //if we have tracks, disable the video message
     useEffect(()=>{
         if(peerConnection){

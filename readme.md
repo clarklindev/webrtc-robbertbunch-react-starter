@@ -142,7 +142,7 @@ useEffect(() => {
     }
 }, [joined]);
 ```
-
+## 8. socketConnection and socket events  
 ### socketConnection.js
 - single instance socket pattern
 - receives name as prop
@@ -164,6 +164,9 @@ const socketConnection = userName =>{
     });
     }
 ```
+
+## 9. Call and offer  
+
 ### call 
 ```js
 //Home.js
@@ -182,6 +185,8 @@ const call = async () => {
 
 ### prepForCall
 - deals with GUM (get user media)
+- sets `callStatus.haveMedia` to `true` 
+
 
 ```js
 //webrtcUtilities/prepForCall.js
@@ -218,8 +223,97 @@ const prepForCall = (callStatus,updateCallStatus,setLocalStream)=>{
 export default prepForCall
 ```
 
-## 8. socketConnection and socket events  
-## 9. Call and offer  
+### createPeerConnection() 
+- which causes Home's next useEffect(() => {}, [callStatus.haveMedia]); to be called
+- which causes a peerConnection to be setup `const peerConnection = new RTCPeerConnection(peerConfiguration);`
+- `peerConfiguration` is our stun servers setup (iceServers)
+- assign to `remoteStream` by creating a `new MediaStream()`
+- add some listeners `signalingstatechange`, `icecandidate`, `track`
+- when `icecandidate`s comes in, emit and send `sendIceCandidateToSignalingServer`
+- for track listener, when it comes in (from other side), add each track to remoteStream
+- createPeerConnection() returns `peerConnection` and `remoteStream`
+- in Home -> destruct from the return of createPeerConnection `const {peerConnection, remoteStream} = createPeerConnection(userName, typeOfCall);`
+- call setPeerConnection(peerConnection)
+
+```js
+//createPeerConn.js
+import peerConfiguration from './stunServers'
+import socketConnection from "./socketConnection";
+
+const createPeerConnection = (userName,typeOfCall)=>{
+    //token for example
+    const token = 123
+    //init socket connection
+    const socket = socketConnection(token) 
+    try{
+        const peerConnection = new RTCPeerConnection(peerConfiguration);
+        //RTCPeerConnection is how WebRTC connects to another browser (peer).
+        //It takes a config object, which (here) is just stun servers
+        //STUN servers get our ICE candidates
+        const remoteStream = new MediaStream();
+
+        //peerConnection listeners'
+        //peerConnection listeners
+        peerConnection.addEventListener('signalingstatechange', (event)=>{
+            console.log('signaling event change!');
+            console.log(event);
+            console.log(peerConnection.signalingState);
+        })
+        
+        peerConnection.addEventListener('icecandidate', (event)=>{
+            console.log('found an ice candidate');
+            if(event.candidate){
+                socket.emit('sendIceCandidateToSignalingServer', {
+                    iceCandidate: event.candidate,
+                    iceUserName: userName,
+                    didIOffer: typeOfCall === 'offer'
+                })
+            }
+        })
+
+        //something came in from other side -> tracks and add it to remoteStream
+        peerConnection.addEventListener('track', (event)=>
+            event.streams[0].getTracks().forEach(track=>{
+                remoteStream.addTrack(track, remoteStream);
+                console.log('this should add some video/audio to the remote feed.');
+            })
+        })
+
+
+        return({
+            peerConnection,
+            remoteStream,
+        })
+    }catch(err){
+        console.log(err)
+    }
+}
+
+export default createPeerConnection
+
+```
+
+### useEffect(() => {}, [typeOfCall, peerConnection]);
+- the next part of Home, happens because we have just set peerConnection
+- we can now add socketListeners
+- check to see the sockListener is defined then call
+- `webrtcUtilities/clientSocketListeners`
+- this has 2 listeners inside:
+    - `socket.on('answerResponse', ....);`
+    - `socket.on('receivedIceCandiddateFromServer', ...)`
+
+```js
+//We know which type of client this is and have PC.
+//Add socketlisteners
+useEffect(() => {
+    if(typeOfCall && peerConnection){
+        const socket = socketConnection(userName);
+        clientSocketListeners(socket,typeOfCall,callStatus,
+    updateCallStatus,peerConnection);
+    }
+}, [typeOfCall, peerConnection]);
+```
+
 ## 10. Enable and disable video  
 ## 11. Answer  
 ## 12. Hangup button  

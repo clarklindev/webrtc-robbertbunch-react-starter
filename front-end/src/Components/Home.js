@@ -33,6 +33,7 @@ const Home = () => {
     const initCall = async (typeOfCall) => {
         //set localStream and GUM
         await prepForCall(callStatus,updateCallStatus,setLocalStream);
+        // console.log('gum access granted');
         setTypeOfCall(typeOfCall);  //offer or answer
 
     };
@@ -65,16 +66,31 @@ const Home = () => {
     }, [joined]);
 
     //We have media via GUM. setup the peerConnection w/listeners
-    useEffect(() => {}, [callStatus.haveMedia]);
+    useEffect(() => {
+        if(callStatus.haveMedia && !peerConnection){
+            //prepForCall has finished running and updated callStatus 
+            const {peerConnection, remoteStream} = createPeerConnection(userName, typeOfCall);
+            setPeerConnection(peerConnection);
+            setRemoteStream(remoteStream);
+        }
+    }, [callStatus.haveMedia]);
 
     //We know which type of client this is and have PC.
     //Add socketlisteners
-    useEffect(() => {}, [typeOfCall, peerConnection]);
+    useEffect(() => {
+        if(typeOfCall && peerConnection){
+            const socket = socketConnection(userName);
+            clientSocketListeners(socket,typeOfCall,callStatus,
+                updateCallStatus,peerConnection);
+        }
+    }, [typeOfCall, peerConnection]);
 
     //once remoteStream AND pc are ready, navigate
-    useEffect(() => {}, [remoteStream, peerConnection]);
-
-    useEffect(() => {});
+    useEffect(() => {
+        if(remoteStream && peerConnection){
+            navigate(`/${typeOfCall}`)
+        }
+    }, [remoteStream, peerConnection]);
 
     const call = async () => {
         //call related stuff goes here
