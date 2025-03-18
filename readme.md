@@ -166,6 +166,7 @@ const socketConnection = userName =>{
 ```
 
 ## 9. Call and offer  
+- 28min02sec
 
 ### call 
 ```js
@@ -315,5 +316,90 @@ useEffect(() => {
 ```
 
 ## 10. Enable and disable video  
+### VideoButton
+- @54min14sec -> @63min18sec
+
+```js
+//VideoButton.js
+//handle user clicking on video button
+
+const VideoButton = ({localFeedEl,callStatus,localStream,updateCallStatus,peerConnection})=>{
+
+    //handle user clicking on video button
+    const startStopVideo = ()=>{
+        const copyCallStatus = {...callStatus};
+        //useCases:
+        if(copyCallStatus.videoEnabled){
+            //1. video is enabled, so we need to disable it (ref. prepForCall.js)
+            //disable
+            copyCallStatus.videoEnabled = false;
+            updateCallStatus(copyCallStatus);
+            const tracks = localStream.getVideoTracks();
+            tracks.forEach(track=>track.enabled === false); //correct way to disable track in peer connection
+
+        }else if(copyCallStatus.videoEnabled === false){
+            //2. video is disabled so we need to enable
+            copyCallStatus.videoEnabled = true;
+            updateCallStatus(copyCallStatus);
+            const tracks = localStream.getVideoTracks();
+            tracks.forEach(track=>track.enabled === true); //correct way to enable track in peer connection
+
+        } else if(copyCallStatus.videoEnabled === null){
+            //3. video is null, so we need to init
+            console.log('init video');
+            copyCallStatus.videoEnabled = true;
+            updateCallStatus(copyCallStatus);
+
+            //we are not adding tracks so they are visible in the video tag.
+            //we are adding them to the peerConnection so they can be sent
+            localStream.getTracks().forEach(track=> {
+                peerConnection.addTrack(track, localStream);
+            })
+        }
+
+
+    }
+
+    return(
+        <div className="button-wrapper video-button d-inline-block">
+            <i className="fa fa-caret-up choose-video"></i>
+            <div className="button camera" onClick={startStopVideo}>
+                <i className="fa fa-video"></i>
+                <div className="btn-text">{callStatus.video === "enabled" ? "Stop" : "Start"} Video</div>
+            </div>
+        </div>
+    )
+}
+export default VideoButton;
+```
+
+### CallerVideo
+- @64min07sec -> @70min26sec
+```js
+//once the user has shared video, start WebRTC'ing :)
+useEffect(()=>{
+    const shareVideoAsync = async ()=>{
+        const offer = await peerConnection.createOffer();
+        peerConnection.setLocalDescription(offer);
+        //we can now start collecting ice candidates!
+        //we need to emit the offer to the server
+        const socket = socketConnection(userName);
+        socket.emit('newOffer', offer);
+        setOfferCreated(true);//so useEffect doesnt make offer again
+        setVideoMessage('Awaiting answer....');//update video message box
+        console.log("created offer, setLocalDesc, emitted offer, updated VideoMessage")
+
+    }
+    if(!offerCreated && callStatus.videoEnabled){
+        //CREATE AN OFFER!
+        console.log('we have video and no offer...making an offer');
+        shareVideoAsync();
+    }
+},[callStatus.videoEnabled,offerCreated])
+```
+
 ## 11. Answer  
+- @70min26sec
+
 ## 12. Hangup button  
+- @81min30sec

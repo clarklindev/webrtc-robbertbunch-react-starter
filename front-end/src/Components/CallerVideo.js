@@ -37,7 +37,23 @@ const CallerVideo = ()=>{
 
     //once the user has shared video, start WebRTC'ing :)
     useEffect(()=>{
-        
+        const shareVideoAsync = async ()=>{
+            const offer = await peerConnection.createOffer();
+            peerConnection.setLocalDescription(offer);
+            //we can now start collecting ice candidates!
+            //we need to emit the offer to the server
+            const socket = socketConnection(userName);
+            socket.emit('newOffer', offer);
+            setOfferCreated(true);//so useEffect doesnt make offer again
+            setVideoMessage('Awaiting answer....');//update video message box
+            console.log("created offer, setLocalDesc, emitted offer, updated VideoMessage")
+
+        }
+        if(!offerCreated && callStatus.videoEnabled){
+            //CREATE AN OFFER!
+            console.log('we have video and no offer...making an offer');
+            shareVideoAsync();
+        }
     },[callStatus.videoEnabled,offerCreated])
     
 
