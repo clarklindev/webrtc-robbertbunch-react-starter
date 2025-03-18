@@ -8,7 +8,7 @@ import { useWebrtc } from "../context/WebrtcContext";
 
 const CallerVideo = ()=>{
 
-    const { callStatus, peerConnection, remoteStream, localStream, userName, updateCallStatus} = useWebrtc();
+    const { callStatus, updateCallStatus, peerConnection, remoteStream, setRemoteStream, userName, setUserName, localStream, setLocalStream} = useWebrtc();
 
     const remoteFeedEl = useRef(null); //this is a React ref to a dom element, so we can interact with it the React way
     const localFeedEl = useRef(null); //this is a React ref to a dom element, so we can interact with it the React way

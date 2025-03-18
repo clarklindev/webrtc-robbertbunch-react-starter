@@ -30,7 +30,11 @@ const Home = () => {
     const navigate = useNavigate();
 
     //called on "Call" or "Answer"
-    const initCall = async (typeOfCall) => {};
+    const initCall = async (typeOfCall) => {
+        //set localStream and GUM
+        await prepForCall(callStatus,updateCallStatus,setLocalStream);
+
+    };
 
     //Test backend connection
     // useEffect(() => {
@@ -43,7 +47,21 @@ const Home = () => {
 
     //Nothing happens until the user clicks join
     //(Helps with React double render)
-    useEffect(() => {}, [joined]);
+    useEffect(() => {
+        if(joined){
+            const userName = prompt('enter username: ');
+            setUserName(userName);
+
+            const setCalls = data => {
+                setAvailableCalls(data);
+                console.log(data);
+            }
+            //initiate socket connection
+            const socket = socketConnection(userName);
+            socket.on('availableOffers', setCalls);
+            socket.on('newOfferWaiting', setCalls);
+        }
+    }, [joined]);
 
     //We have media via GUM. setup the peerConnection w/listeners
     useEffect(() => {}, [callStatus.haveMedia]);
@@ -59,10 +77,13 @@ const Home = () => {
 
     const call = async () => {
         //call related stuff goes here
+        initCall('offer');
     };
 
     const answer = (callData) => {
         //answer related stuff goes here
+        initCall('answer');
+        setOfferData(callData);
     };
 
     if (!joined) {
