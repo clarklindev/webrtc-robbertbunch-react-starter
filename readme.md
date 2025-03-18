@@ -117,6 +117,107 @@ alt='07-front-end-code-overview-move-app-state-to-react-context.png'
 width=600
 />
 
+### Home 
+- once `join` is clicked, 
+- user asked for username
+- INITIATE socket connection: `const socket = socketConnection(userName);`
+- socketConnection.js code runs...
+
+
+```js
+//Home.js
+useEffect(() => {
+    if(joined){
+        const userName = prompt('enter username: ');
+        setUserName(userName);
+
+        const setCalls = data => {
+            setAvailableCalls(data);
+            console.log(data);
+        }
+        //initiate socket connection
+        const socket = socketConnection(userName);
+        socket.on('availableOffers', setCalls);
+        socket.on('newOfferWaiting', setCalls);
+    }
+}, [joined]);
+```
+
+### socketConnection.js
+- single instance socket pattern
+- receives name as prop
+- creates the socket connection:
+- passes to socket connection object `auth` object which has `password`
+
+```js
+
+const socketConnection = userName =>{
+    //...
+
+    socket = io.connect('http://localhost:8181',{
+    // socket = io.connect('https://192.168.1.44:8181',{
+        auth: {
+            // jwt,
+            password: "x",
+            userName, 
+        }
+    });
+    }
+```
+### call 
+```js
+//Home.js
+//called on "Call" or "Answer"
+const initCall = async (typeOfCall) => {
+    //set localStream and GUM
+    await prepForCall(callStatus,updateCallStatus,setLocalStream);
+};
+
+//...
+const call = async () => {
+    //call related stuff goes here
+    initCall('offer');
+};
+```
+
+### prepForCall
+- deals with GUM (get user media)
+
+```js
+//webrtcUtilities/prepForCall.js
+//Share this function for both sides, answer and caller
+// because both sides need to do this same thing before
+// we can move forward
+import socketConnection from "./socketConnection";
+
+
+const prepForCall = (callStatus,updateCallStatus,setLocalStream)=>{
+    return new Promise(async(resolve, reject)=>{
+        //can bring constraints in as a param
+        const constraints = {
+            video: true, //must have one constraint, dont have to show it yet
+            audio: false, 
+        }
+        try{
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            //update bools
+            const copyCallStatus = {...callStatus}
+            copyCallStatus.haveMedia = true //signals to the app that we have media
+            copyCallStatus.videoEnabled = null //init both to false, you can init to true
+            copyCallStatus.audioEnabled = false
+            updateCallStatus(copyCallStatus)
+            setLocalStream(stream)
+            resolve()
+        }catch(err){
+            console.log(err);
+            reject(err)
+        }
+    })
+}
+
+export default prepForCall
+```
+
 ## 8. socketConnection and socket events  
 ## 9. Call and offer  
 ## 10. Enable and disable video  

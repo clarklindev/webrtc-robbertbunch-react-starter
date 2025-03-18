@@ -33,6 +33,7 @@ const Home = () => {
     const initCall = async (typeOfCall) => {
         //set localStream and GUM
         await prepForCall(callStatus,updateCallStatus,setLocalStream);
+        setTypeOfCall(typeOfCall);  //offer or answer
 
     };
 

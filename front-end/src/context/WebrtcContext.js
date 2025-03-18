@@ -31,17 +31,17 @@ const WebrtcContext = React.createContext({
 const webrtcReducer = (state, action)=>{
     switch(action.type){
         case "updateCallStatus":
-            return [...state, {callStatus: action.payload.callStatus}];
+            return {...state, callStatus: action.payload.callStatus};
         case "setLocalStream":
-            return [...state, {localStream: action.payload.localStream}];
+            return {...state, localStream: action.payload.localStream};
         case "setRemoteStream":
-            return [...state, {remoteStream: action.payload.remoteStream}];
+            return {...state, remoteStream: action.payload.remoteStream};
         case "setPeerConnection":
-            return [...state, {peerConnection: action.payload.peerConnection}];
+            return {...state, peerConnection: action.payload.peerConnection};
         case "setUserName":
-            return [...state, {userName: action.payload.userName}];
+            return {...state, userName: action.payload.userName};
         case "setOfferData":
-            return [...state, {offerData: action.payload.offerData}];
+            return {...state, offerData: action.payload.offerData};
         default:
             return state;
     }
